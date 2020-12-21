@@ -16,13 +16,21 @@ firebase.initializeApp(firebaseConfig);
 
 
 function App() {
-  const handleClickFetchButton =() =>{
+  const handleClickFetchButton = () =>{
     const db = firebase.firestore();
-    db.collection('users').doc('8QdSeumAbMUysOhpO0ZZ').get().then((doc)=>{
-      console.log('Document data:', doc.data());
-    });
 
-    console.log('fetch clicked');
+    // document 取得
+    // const db = firebase.firestore();
+    // const doc = await db.collection('users').doc('8QdSeumAbMUysOhpO0ZZ').get();
+    // console.log(doc.data());
+      
+    // collection 取得
+
+    db.collection('users').get().then((snapshot)=>{
+      snapshot.forEach(doc => {
+        console.log(doc.id, '=>',doc.data());
+      });
+    });
   };
 
   return (
