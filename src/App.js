@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import firebase  from 'firebase';
 import logo from './logo.svg';
 import './App.css';
@@ -16,29 +16,38 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
 
 function App() {
+  const [users, setUsers]=useState([]);
+
   const handleClickFetchButton = async () => {
     const db = firebase.firestore();
 
     // コレクション取得
     const snapshot = await db
     .collection('users')
-    .where('location','==','tokyo')
     .get();
-
-    snapshot.forEach(doc=>{
-      console.log(doc.id, '=>', doc.data());
+    const _users= [];
+    snapshot.forEach(doc => {
+      _users.push({
+        userId: doc.id,
+        ...doc.data()
+      });
     });
 
+    setUsers(_users);
   };
+
+  const userListItems = users.map(user=>{
+    return(
+      <li key={user.userID}>{user.name}:{user.age}:{user.location}</li>
+    );
+  })
 
   return (
     <div className="App">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          nd save to reload.123
-        </p>
-        
+        <p>ボタン押すとfirestoreの情報見れるよ</p>       
         <button onClick={handleClickFetchButton}>aaa</button>
+        <ul>{userListItems}</ul>
         
     </div>
   );
