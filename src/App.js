@@ -16,14 +16,12 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
 
 function App() {
-  const handleClickFetchButton = () => {
+  const handleClickFetchButton = async () => {
     const db = firebase.firestore();
-    db.collection('users').doc('XOZ4cadUKYQMHtkOj5YZ').get().then((doc)=>{
-      console.log('Document data:', doc.data());
-
-    });
-
+    const doc = await db.collection('users').doc('XOZ4cadUKYQMHtkOj5YZ').get();
+    console.log(doc.data());
     console.log('fetch clicked');
+
   };
 
   return (
