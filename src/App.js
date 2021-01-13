@@ -20,7 +20,11 @@ function App() {
     const db = firebase.firestore();
 
     // コレクション取得
-    const snapshot = await db.collection('users').get();
+    const snapshot = await db
+    .collection('users')
+    .where('location','==','tokyo')
+    .get();
+
     snapshot.forEach(doc=>{
       console.log(doc.id, '=>', doc.data());
     });
