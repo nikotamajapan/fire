@@ -18,9 +18,13 @@ const firebaseConfig = {
 function App() {
   const handleClickFetchButton = async () => {
     const db = firebase.firestore();
-    const doc = await db.collection('users').doc('XOZ4cadUKYQMHtkOj5YZ').get();
-    console.log(doc.data());
-    console.log('fetch clicked');
+
+    // コレクション取得
+    db.collection('users').get().then((snapshot)=>{
+      snapshot.forEach(doc=>{
+        console.log(doc.id, '=>', doc.data());
+      });
+    });
 
   };
 
