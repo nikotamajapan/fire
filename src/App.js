@@ -20,10 +20,9 @@ function App() {
     const db = firebase.firestore();
 
     // コレクション取得
-    db.collection('users').get().then((snapshot)=>{
-      snapshot.forEach(doc=>{
-        console.log(doc.id, '=>', doc.data());
-      });
+    const snapshot = await db.collection('users').get();
+    snapshot.forEach(doc=>{
+      console.log(doc.id, '=>', doc.data());
     });
 
   };
