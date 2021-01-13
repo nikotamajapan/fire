@@ -1,49 +1,40 @@
 import React from 'react';
-import firebase from 'firebase';
+import firebase  from 'firebase';
 import logo from './logo.svg';
 import './App.css';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDLwIal6QUyU6G3dp6MCkZQzZfSbO8GMvk",
-  authDomain: "test3-91199.firebaseapp.com",
-  projectId: "test3-91199",
-  storageBucket: "test3-91199.appspot.com",
-  messagingSenderId: "754636685483",
-  appId: "1:754636685483:web:8a5b081f619baf6c04f7ee",
-  measurementId: "G-HJ6FRRB97H"
+  apiKey: "AIzaSyDbGGto5FBBf-Sb2MuIEFlFJY8Fsw6_8OE",
+  authDomain: "test2-10911.firebaseapp.com",
+  projectId: "test2-10911",
+  storageBucket: "test2-10911.appspot.com",
+  messagingSenderId: "823756589849",
+  appId: "1:823756589849:web:2763a9019b6860c7c5d388",
+  measurementId: "G-QC3M8FT7MV"
 };
-firebase.initializeApp(firebaseConfig);
-
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
 
 function App() {
-  const handleClickFetchButton = () =>{
+  const handleClickFetchButton = () => {
     const db = firebase.firestore();
+    db.collection('users').doc('XOZ4cadUKYQMHtkOj5YZ').get().then((doc)=>{
+      console.log('Document data:', doc.data());
 
-    // document 取得
-    // const db = firebase.firestore();
-    // const doc = await db.collection('users').doc('8QdSeumAbMUysOhpO0ZZ').get();
-    // console.log(doc.data());
-      
-    // collection 取得
-
-    db.collection('users').get().then((snapshot)=>{
-      snapshot.forEach(doc => {
-        console.log(doc.id, '=>',doc.data());
-      });
     });
+
+    console.log('fetch clicked');
   };
 
   return (
     <div className="App">
-      <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit and save to reload.123
+          nd save to reload.123
         </p>
-        <button onClick={handleClickFetchButton}>aaa
-        </button>
         
-      </header>
+        <button onClick={handleClickFetchButton}>aaa</button>
+        
     </div>
   );
 }
