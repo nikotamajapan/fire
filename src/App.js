@@ -18,6 +18,8 @@ const firebaseConfig = {
 
 function App() {
   const [users, setUsers]=useState([]);
+  const [userName, setUserName]=useState('');
+  const [age, setAge]=useState('');
 
   const handleClickFetchButton = async () => {
     const db = firebase.firestore();
@@ -37,17 +39,17 @@ function App() {
     setUsers(_users);
   };
   const handleClickAddButton = async () => {
-    // if (!userName || !age){
-    //   SpeechRecognitionAlternative('"userName"or"age"が空です');
-    //   return;
+    if (!userName || !age){
+      alert('"userName"or"age"が空です');
+      return;
 
-    // }
-    // const parsedAge = parseInt(age, 10);
+    }
+    const parsedAge = parseInt(age, 10);
 
-    // if (isNaN(parsedAge)){
-    //   aleart('number has to be small letter');
-    //   return;
-    // }
+    if (isNaN(parsedAge)){
+      alert('number has to be number');
+      return;
+    }
     const db = firebase.firestore();
     // await db 
     //   .collection('users')
@@ -58,16 +60,16 @@ function App() {
     //   },{merge: true});
 
     // add
-    const ref= await db.collection('users').add({
-      name:'tokyo',
-      age:100,
+    await db.collection('users').add({
+      name:userName,
+      age:parsedAge,
     });
-    const snapshot = await ref.get();
-    const data =  snapshot.data();
-    console.log(ref.id);
-  
+    // const snapshot = await ref.get();
+    // const data =  snapshot.data();
+    // console.log(ref.id, data);
 
-
+    setUserName('');
+    setAge('');
   }
 
 
@@ -80,9 +82,25 @@ function App() {
   return (
     <div className="App">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>ボタン押すとfirestoreの情報見れるよ</p>       
-        <button onClick={handleClickFetchButton}>aaa</button>
-        <button onClick={handleClickAddButton}>bbb</button>
+        <p>ボタン押すとfirestoreの情報見れるよ</p> 
+
+        <label htmlFor="username">userName :  </label>  
+        <input 
+        type='text'
+        id='username'
+        value={userName}
+        onChange={(event) =>{setUserName(event.target.value)}}
+        />
+        <label htmlFor="age">age :  </label>  
+        <input 
+        type='text'
+        id='age'
+        value={age}
+        onChange={(event) =>{setAge(event.target.value)}}
+        />
+        
+        <button onClick={handleClickFetchButton}>fetch</button>
+        <button onClick={handleClickAddButton}>add</button>
         <ul>{userListItems}</ul>
 
         
