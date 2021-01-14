@@ -2,6 +2,7 @@ import React,{useState} from 'react';
 import firebase  from 'firebase';
 import logo from './logo.svg';
 import './App.css';
+import { firestore } from 'firebase-admin';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDbGGto5FBBf-Sb2MuIEFlFJY8Fsw6_8OE",
@@ -35,6 +36,29 @@ function App() {
 
     setUsers(_users);
   };
+  const handleClickAddButton = async () => {
+    // if (!userName || !age){
+    //   SpeechRecognitionAlternative('"userName"or"age"が空です');
+    //   return;
+
+    // }
+    // const parsedAge = parseInt(age, 10);
+
+    // if (isNaN(parsedAge)){
+    //   aleart('number has to be small letter');
+    //   return;
+    // }
+    const db = firebase.firestore();
+    await db 
+      .collection('users')
+      .doc('1111')
+      .set({
+        // name:'DUMMY',
+        age:88,
+      });
+
+  }
+
 
   const userListItems = users.map(user=>{
     return(
@@ -47,8 +71,9 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>ボタン押すとfirestoreの情報見れるよ</p>       
         <button onClick={handleClickFetchButton}>aaa</button>
+        <button onClick={handleClickAddButton}>bbb</button>
         <ul>{userListItems}</ul>
-        
+
         
     </div>
   );
