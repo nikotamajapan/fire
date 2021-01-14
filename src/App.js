@@ -54,8 +54,8 @@ function App() {
       .doc('1111')
       .set({
         // name:'DUMMY',
-        age:88,
-      });
+        age:66,
+      },{merge: true});
 
   }
 
