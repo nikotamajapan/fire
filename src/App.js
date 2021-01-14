@@ -58,13 +58,14 @@ function App() {
     //   },{merge: true});
 
     // add
-    db.collection('users').add({
+    const ref= await db.collection('users').add({
       name:'tokyo',
       age:100,
-    }).then(ref=>{
-      console.log('added document with ID : ',ref.id);
     });
-
+    const snapshot = await ref.get();
+    const data =  snapshot.data();
+    console.log(ref.id);
+  
 
 
   }
