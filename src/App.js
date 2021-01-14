@@ -49,13 +49,23 @@ function App() {
     //   return;
     // }
     const db = firebase.firestore();
-    await db 
-      .collection('users')
-      .doc('1111')
-      .set({
-        // name:'DUMMY',
-        age:66,
-      },{merge: true});
+    // await db 
+    //   .collection('users')
+    //   .doc('1111')
+    //   .set({
+    //     // name:'DUMMY',
+    //     age:66,
+    //   },{merge: true});
+
+    // add
+    db.collection('users').add({
+      name:'tokyo',
+      age:100,
+    }).then(ref=>{
+      console.log('added document with ID : ',ref.id);
+    });
+
+
 
   }
 
