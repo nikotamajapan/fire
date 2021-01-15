@@ -20,6 +20,7 @@ function App() {
   const [users, setUsers]=useState([]);
   const [userName, setUserName]=useState('');
   const [age, setAge]=useState('');
+  const [documentId, setDocumentId]=useState('');
 
   const handleClickFetchButton = async () => {
     const db = firebase.firestore();
@@ -72,20 +73,46 @@ function App() {
     setAge('');
   };
   const handleClickUpdateButton = async () => {
-    // if(!codumentId){
-    //   alert('documentId set!');
-    //   return;
-    // }
-    const db = firebase.firestore();
-    await db.collection('users').doc('c8QOdwfueqtutUMh0FAs').update({
-      name:'new',
-      age:555
-    });
+    if (!documentId) {
+      alert('documentId set!');
+      return;
+    }
+
+    const newData = {};
+    if (userName){
+      newData['name'] = userName;
+    }
+    if (age) {
+      newData['age'] = parseInt(age, 10);;
+    }
+
+    try{
+      const db = firebase.firestore();
+      await db.collection('users').doc(documentId).update(newData);
+      setUserName('');
+      setAge('');
+      setDocumentId('');
+    } catch (error){
+      console.error(error);
+    }
+
+    // const db = firebase.firestore();
+    // await db.collection('users').doc('c8QOdwfueqtutUMh0FAs').update({
+    //   name:'new',
+    //   age:555
+    // });
   };
 
   const userListItems = users.map(user=>{
     return(
-      <li key={user.userID}>{user.name}:{user.age}:{user.location}</li>
+      <li key={user.userID}>
+        <ul>
+          <li>ID : {user.userId}</li>
+          <li>name : {user.name}</li>
+          <li>age : {user.age}</li>
+        </ul>
+      </li>
+        
     );
   })
 
@@ -94,8 +121,10 @@ function App() {
         
         <img src={logo} className="App-logo" alt="logo" />
         <p>fetchボタン押すとfirestoreの情報見れるよ</p> 
+        <p>addボタン押すと追加</p> 
+        <p>pudateボタン押すと変更</p> 
+        
         <div>
-
           <label htmlFor="username">userName :  </label>  
           <input 
           type='text'
@@ -109,9 +138,16 @@ function App() {
           id='age'
           value={age}
           onChange={(event) =>{setAge(event.target.value)}}
-          />
-          
+          />          
+          <label htmlFor="documentId">documentId :  </label>  
+          <input 
+          type='text'
+          id='documentId'
+          value={documentId}
+          onChange={(event) =>{setDocumentId(event.target.value)}}
+          />          
         </div>
+
         <button onClick={handleClickFetchButton}>fetch</button>
         <button onClick={handleClickAddButton}>add</button>
         <button onClick={handleClickUpdateButton}>update</button>
