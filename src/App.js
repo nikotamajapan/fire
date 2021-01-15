@@ -70,8 +70,18 @@ function App() {
 
     setUserName('');
     setAge('');
-  }
-
+  };
+  const handleClickUpdateButton = async () => {
+    // if(!codumentId){
+    //   alert('documentId set!');
+    //   return;
+    // }
+    const db = firebase.firestore();
+    await db.collection('users').doc('c8QOdwfueqtutUMh0FAs').update({
+      name:'new',
+      age:555
+    });
+  };
 
   const userListItems = users.map(user=>{
     return(
@@ -81,26 +91,30 @@ function App() {
 
   return (
     <div className="App">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>ボタン押すとfirestoreの情報見れるよ</p> 
-
-        <label htmlFor="username">userName :  </label>  
-        <input 
-        type='text'
-        id='username'
-        value={userName}
-        onChange={(event) =>{setUserName(event.target.value)}}
-        />
-        <label htmlFor="age">age :  </label>  
-        <input 
-        type='text'
-        id='age'
-        value={age}
-        onChange={(event) =>{setAge(event.target.value)}}
-        />
         
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>fetchボタン押すとfirestoreの情報見れるよ</p> 
+        <div>
+
+          <label htmlFor="username">userName :  </label>  
+          <input 
+          type='text'
+          id='username'
+          value={userName}
+          onChange={(event) =>{setUserName(event.target.value)}}
+          />
+          <label htmlFor="age">age :  </label>  
+          <input 
+          type='text'
+          id='age'
+          value={age}
+          onChange={(event) =>{setAge(event.target.value)}}
+          />
+          
+        </div>
         <button onClick={handleClickFetchButton}>fetch</button>
         <button onClick={handleClickAddButton}>add</button>
+        <button onClick={handleClickUpdateButton}>update</button>
         <ul>{userListItems}</ul>
 
         
