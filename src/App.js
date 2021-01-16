@@ -1,9 +1,8 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import firebase  from 'firebase';
 import logo from './logo.svg';
 import './App.css';
-import { firestore } from 'firebase-admin';
-
+// import { firestore } from 'firebase-admin';
 const firebaseConfig = {
   apiKey: "AIzaSyDbGGto5FBBf-Sb2MuIEFlFJY8Fsw6_8OE",
   authDomain: "test2-10911.firebaseapp.com",
@@ -13,14 +12,36 @@ const firebaseConfig = {
   appId: "1:823756589849:web:2763a9019b6860c7c5d388",
   measurementId: "G-QC3M8FT7MV"
 };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+
+firebase.initializeApp(firebaseConfig);
 
 function App() {
   const [users, setUsers]=useState([]);
   const [userName, setUserName]=useState('');
   const [age, setAge]=useState('');
   const [documentId, setDocumentId]=useState('');
+
+  useEffect(()=> {
+    const db = firebase.firestore();
+    const unsubscribe = db.collection('users').onSnapshot((querySnapshot)=> {
+      // console.log('add ! ! !');
+      // querySnapshot.forEach(doc => {
+      //   console.log(doc.id, doc.data());
+      //   console.log('----------------');
+      // });
+
+      const _users = querySnapshot.docs.map(doc => {
+        return {
+          userId: doc.id,
+          ...doc.data()
+        }
+      });
+      setUsers(_users);
+    });
+    return ()=>{
+      unsubscribe();
+    };
+  }, []);
 
   const handleClickFetchButton = async () => {
     const db = firebase.firestore();
@@ -77,7 +98,6 @@ function App() {
       alert('documentId set!');
       return;
     }
-
     const newData = {};
     if (userName){
       newData['name'] = userName;
@@ -102,19 +122,34 @@ function App() {
     //   age:555
     // });
   };
+  const handleClickDeleteButton = async () => {
+    if(!documentId) {
+      alert('docmentId set!');
+      return;
+    }
 
-  const userListItems = users.map(user=>{
+    try {
+      const db = firebase.firestore();
+      await db.collection('users').doc(documentId).delete();
+      setUserName('');
+      setAge('');
+      setDocumentId('');
+    } catch(error){
+      console.log(error);
+    }
+  };
+
+  const userListItems = users.map(user => {
     return(
-      <li key={user.userID}>
+      <li key={user.userId}>
         <ul>
           <li>ID : {user.userId}</li>
           <li>name : {user.name}</li>
           <li>age : {user.age}</li>
         </ul>
-      </li>
-        
+      </li>        
     );
-  })
+  });
 
   return (
     <div className="App">
@@ -151,9 +186,8 @@ function App() {
         <button onClick={handleClickFetchButton}>fetch</button>
         <button onClick={handleClickAddButton}>add</button>
         <button onClick={handleClickUpdateButton}>update</button>
-        <ul>{userListItems}</ul>
-
-        
+        <button onClick={handleClickDeleteButton}>Delete</button>
+        <ul>{userListItems}</ul>        
     </div>
   );
 }
