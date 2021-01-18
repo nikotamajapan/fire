@@ -23,13 +23,7 @@ function App() {
 
   useEffect(()=> {
     const db = firebase.firestore();
-    const unsubscribe = db.collection('users').onSnapshot((querySnapshot)=> {
-      // console.log('add ! ! !');
-      // querySnapshot.forEach(doc => {
-      //   console.log(doc.id, doc.data());
-      //   console.log('----------------');
-      // });
-
+    const unsubscribe = db.collection('users').orderBy('age','asc').onSnapshot((querySnapshot)=> {
       const _users = querySnapshot.docs.map(doc => {
         return {
           userId: doc.id,
