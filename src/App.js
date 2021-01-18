@@ -149,7 +149,7 @@ function App() {
     <div className="App">
         
         <img src={logo} className="App-logo" alt="logo" />
-        <p>fetchボタン押すとfirestoreの情報見れるよ</p> 
+        <p>fetchボタン押すとfirestoreの情報見れるよ--</p> 
         <p>addボタン押すと追加</p> 
         <p>pudateボタン押すと変更</p> 
         
